@@ -1,0 +1,9 @@
+# ide
+/.vscode
+
+# app
+/src/*.o
+
+# generated
+/output
+
