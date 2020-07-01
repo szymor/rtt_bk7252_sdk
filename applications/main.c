@@ -35,6 +35,7 @@
 #include "shell.h"
 #include <fal.h>
 #include "rt_ota.h"
+#include "user_cloud.h"
 
 #include "format_m4a.h"
 #include "codec_helixmp3.h"
@@ -159,6 +160,8 @@ int main(int argc, char **argv)
     #if ((CFG_USE_APP_DEMO_VIDEO_TRANSFER) || (CFG_SUPPORT_TIANZHIHENG_DRONE))
     // user_main(NULL);
     #endif
+
+    clock_main();
 
     return 0;
 }

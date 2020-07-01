@@ -42,10 +42,10 @@
 #define LWIP_LOOPBACK_MAX_PBUFS         8
 
 #define TCPIP_THREAD_NAME               "tcp/ip"
-#define TCPIP_THREAD_STACKSIZE          512
+#define TCPIP_THREAD_STACKSIZE          1024
 #define TCPIP_THREAD_PRIO               7
 
-#define DEFAULT_THREAD_STACKSIZE        200
+#define DEFAULT_THREAD_STACKSIZE        512
 #define DEFAULT_THREAD_PRIO             1
 
 /* Disable lwIP asserts */
