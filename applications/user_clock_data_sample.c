@@ -34,14 +34,6 @@ static DeviceInfo clock_devInfo;
 static Timer clock_reportTimer;
 
 
-/* anis color control codes */
-#define ANSI_COLOR_RED     "\x1b[31m"
-#define ANSI_COLOR_GREEN   "\x1b[32m"
-#define ANSI_COLOR_YELLOW  "\x1b[33m"
-#define ANSI_COLOR_BLUE    "\x1b[34m"
-#define ANSI_COLOR_RESET   "\x1b[0m"
-
-
 static MQTTEventType sg_subscribe_event_result = MQTT_EVENT_UNDEF;
 static bool clock_control_msg_arrived = false;
 static char clock_data_report_buffer[2048];
@@ -59,16 +51,16 @@ static size_t clock_data_report_buffersize = sizeof(clock_data_report_buffer) / 
 static sDataPoint    clock_DataTemplate[CLOCK_TOTAL_PROPERTY_COUNT];
 
 typedef enum {
-    eCOLOR_RED = 0,
-    eCOLOR_GREEN = 1,
-    eCOLOR_BLUE = 2,
-} eColor;
+    eWeather_SUNNY = 0,
+    eWeather_LIGHT_RAIN = 1,
+    eWeather_HEAVY_RAIN = 2,
+} eWeather;
 
 typedef struct _ClockProductDataDefine {
-    TYPE_DEF_TEMPLATE_BOOL m_light_switch;
-    TYPE_DEF_TEMPLATE_ENUM m_color;
-    TYPE_DEF_TEMPLATE_INT  m_brightness;
-    TYPE_DEF_TEMPLATE_STRING m_name[CLOCK_MAX_STR_NAME_LEN + 1];
+    TYPE_DEF_TEMPLATE_BOOL m_voice;
+    TYPE_DEF_TEMPLATE_INT  m_temp;
+    TYPE_DEF_TEMPLATE_INT  m_humi;
+    TYPE_DEF_TEMPLATE_ENUM m_weather;
 } ClockProductDataDefine;
 
 static   ClockProductDataDefine     clock_ProductData;
@@ -77,27 +69,25 @@ static void _init_data_template(void)
 {
     memset((void *) & clock_ProductData, 0, sizeof(ClockProductDataDefine));
 
-    clock_ProductData.m_light_switch = 0;
-    clock_DataTemplate[0].data_property.key  = "power_switch";
-    clock_DataTemplate[0].data_property.data = &clock_ProductData.m_light_switch;
+    clock_ProductData.m_voice = 0;
+    clock_DataTemplate[0].data_property.key  = "voice";
+    clock_DataTemplate[0].data_property.data = &clock_ProductData.m_voice;
     clock_DataTemplate[0].data_property.type = TYPE_TEMPLATE_BOOL;
 
-    clock_ProductData.m_color = eCOLOR_RED;
-    clock_DataTemplate[1].data_property.key  = "color";
-    clock_DataTemplate[1].data_property.data = &clock_ProductData.m_color;
-    clock_DataTemplate[1].data_property.type = TYPE_TEMPLATE_ENUM;
+    clock_ProductData.m_temp = 0;
+    clock_DataTemplate[1].data_property.key  = "temp";
+    clock_DataTemplate[1].data_property.data = &clock_ProductData.m_temp;
+    clock_DataTemplate[1].data_property.type = TYPE_TEMPLATE_INT;
 
-    clock_ProductData.m_brightness = 0;
-    clock_DataTemplate[2].data_property.key  = "brightness";
-    clock_DataTemplate[2].data_property.data = &clock_ProductData.m_brightness;
+    clock_ProductData.m_humi = 0;
+    clock_DataTemplate[2].data_property.key  = "humi";
+    clock_DataTemplate[2].data_property.data = &clock_ProductData.m_humi;
     clock_DataTemplate[2].data_property.type = TYPE_TEMPLATE_INT;
 
-    strncpy(clock_ProductData.m_name, clock_devInfo.device_name, CLOCK_MAX_STR_NAME_LEN);
-    clock_ProductData.m_name[strlen(clock_devInfo.device_name)] = '\0';
-    clock_DataTemplate[3].data_property.key  = "name";
-    clock_DataTemplate[3].data_property.data = &clock_ProductData.m_name;
-    clock_DataTemplate[3].data_property.data_buff_len = CLOCK_MAX_STR_NAME_LEN;
-    clock_DataTemplate[3].data_property.type = TYPE_TEMPLATE_STRING;
+    clock_ProductData.m_weather = eWeather_SUNNY;
+    clock_DataTemplate[3].data_property.key  = "weather";
+    clock_DataTemplate[3].data_property.data = &clock_ProductData.m_weather;
+    clock_DataTemplate[3].data_property.type = TYPE_TEMPLATE_ENUM;
 };
 /*-----------------data config end  -------------------*/
 
@@ -468,51 +458,38 @@ static void  clock_set_propery_state(void *pProperyData, eDataState state)
 static void clock_deal_down_stream_user_logic(void *client, ClockProductDataDefine *clock)
 {
     int i;
-    const char * ansi_color = NULL;
-    const char * ansi_color_name = NULL;
-    char brightness_bar[]      = "||||||||||||||||||||";
-    int brightness_bar_len = strlen(brightness_bar);
+    const char * ansi_weather_name = NULL;
 
     /* clock color */
-    switch (clock->m_color) {
-        case eCOLOR_RED:
-            ansi_color = ANSI_COLOR_RED;
-            ansi_color_name = " RED ";
+    switch (clock->m_weather) {
+        case eWeather_SUNNY:
+            ansi_weather_name = " SUNNY ";
             break;
-        case eCOLOR_GREEN:
-            ansi_color = ANSI_COLOR_GREEN;
-            ansi_color_name = "GREEN";
+        case eWeather_LIGHT_RAIN:
+            ansi_weather_name = "LIGHT RAIN";
             break;
-        case eCOLOR_BLUE:
-            ansi_color = ANSI_COLOR_BLUE;
-            ansi_color_name = " BLUE";
+        case eWeather_HEAVY_RAIN:
+            ansi_weather_name = " HEAVY RAIN";
             break;
         default:
-            ansi_color = ANSI_COLOR_YELLOW;
-            ansi_color_name = "UNKNOWN";
+            ansi_weather_name = "UNKNOWN";
             break;
     }
     
 
-    /* clock brightness bar */
-    brightness_bar_len = (clock->m_brightness >= 100) ? brightness_bar_len : (int)((clock->m_brightness * brightness_bar_len) / 100);
-    for (i = brightness_bar_len; i < strlen(brightness_bar); i++) {
-        brightness_bar[i] = '-';
-    }
-
-    if (clock->m_light_switch) {
+    if (clock->m_voice) {
         /* clock is on , show with the properties*/
-        HAL_Printf( "%s[  lighting  ]|[color:%s]|[brightness:%s]|[%s]\n" ANSI_COLOR_RESET, \
-                    ansi_color, ansi_color_name, brightness_bar, clock->m_name);
+        HAL_Printf( "[  voice is on  ]|[temp:%d]|[humi:%d]|[weather:%s]\n", \
+                    clock->m_temp, clock->m_humi, ansi_weather_name);
     } else {
         /* clock is off */
-        HAL_Printf( ANSI_COLOR_YELLOW"[  clock is off ]|[color:%s]|[brightness:%s]|[%s]\n" ANSI_COLOR_RESET, \
-                    ansi_color_name, brightness_bar, clock->m_name);
+        HAL_Printf( "[  voice is off ]|[temp:%d]|[humi:%d]|[weather:%s]\n", \
+                    clock->m_temp, clock->m_humi, ansi_weather_name);
     }
 
-    if (eCHANGED == clock_get_property_state(&clock->m_light_switch)) {
+    if (eCHANGED == clock_get_property_state(&clock->m_voice)) {
 #ifdef EVENT_POST_ENABLED
-        if (clock->m_light_switch) {
+        if (clock->m_voice) {
             *(TYPE_DEF_TEMPLATE_BOOL *)g_events[0].pEventData[0].data = 1;
             memset((TYPE_DEF_TEMPLATE_STRING *)g_events[0].pEventData[1].data, 0, MAX_EVENT_STR_MESSAGE_LEN);
             strcpy((TYPE_DEF_TEMPLATE_STRING *)g_events[0].pEventData[1].data, "clock on");
@@ -525,7 +502,7 @@ static void clock_deal_down_stream_user_logic(void *client, ClockProductDataDefi
         //switch state changed set EVENT0 flag, the events will be posted by eventPostCheck
         IOT_Event_setFlag(client, FLAG_EVENT0);
 #else
-        Log_d("clock time mode state changed");
+        Log_d("clock voice mode state changed");
 #endif
     }
 }
