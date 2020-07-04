@@ -35,7 +35,7 @@
 #include "shell.h"
 #include <fal.h>
 #include "rt_ota.h"
-#include "user_cloud.h"
+#include "user_include.h"
 
 #include "format_m4a.h"
 #include "codec_helixmp3.h"
@@ -69,7 +69,7 @@ int main(int argc, char **argv)
         rt_kprintf("ROMFS File System initialized Failed!\n");
     }
 
-#if 1
+#if 0
     /* mount sd card fat partition 1 as root directory */
     if(dfs_mount("sd0", "/sd", "elm", 0, 0) == 0)
         rt_kprintf("SD File System initialized!\n");

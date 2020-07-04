@@ -126,5 +126,5 @@ int pwr_btn_test(int argc, char *argv[])
     return RT_EOK; 
 
 }
-INIT_APP_EXPORT(pwr_btn_test);
+// INIT_APP_EXPORT(pwr_btn_test);
 MSH_CMD_EXPORT(pwr_btn_test,pwr_btn_test);

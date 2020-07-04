@@ -44,6 +44,7 @@
 #define RT_CONSOLEBUF_SIZE 128
 #define RT_CONSOLE_DEVICE_NAME "uart1"
 
+#define RT_USING_SENSOR
 /* RT-Thread Components */
 
 #define RT_USING_COMPONENTS_INIT
@@ -280,8 +281,6 @@
 
 /* miscellaneous packages */
 
-#define PKG_USING_MULTIBUTTON
-#define PKG_USING_MULTIBUTTON_V102
 #define PKG_USING_ZLIB
 
 /* MultiButton Options */
@@ -362,8 +361,9 @@
 
 
 #define PKG_USING_MULTIBUTTON
-//#define MULTIBUTTON_USING_EXAMPLE_ASYNC
+#define MULTIBUTTON_USING_EXAMPLE_ASYNC
 
+#define PKG_USING_DHT11
 // #define PKG_USING_LITTLEFS
 // #define RT_USING_MTD_NOR
 #define PKG_USING_WEBNET

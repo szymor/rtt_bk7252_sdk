@@ -77,8 +77,8 @@ int multi_button_test(void)
     button_attach(&btn, PRESS_DOWN,       button_callback);
     button_attach(&btn, PRESS_UP,         button_callback);
     button_attach(&btn, PRESS_REPEAT,     button_callback);
-    button_attach(&btn, SINGLE_CLICK,     button_callback);
     button_attach(&btn, DOUBLE_CLICK,     button_callback);
+    button_attach(&btn, SINGLE_CLICK,     button_callback);
     button_attach(&btn, LONG_RRESS_START, button_callback);
     button_attach(&btn, LONG_PRESS_HOLD,  button_callback);
     button_start (&btn);
@@ -86,4 +86,4 @@ int multi_button_test(void)
     return RT_EOK; 
 }
 //INIT_APP_EXPORT(multi_button_test); 
-MSH_CMD_EXPORT(multi_button_test,multi_button_test);
+MSH_CMD_EXPORT(multi_button_test,multi_button_test test);
