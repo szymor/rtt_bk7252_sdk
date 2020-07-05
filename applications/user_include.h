@@ -11,8 +11,30 @@ enum{
     USER_WLAN_STA_CLOUD
 };
 
+typedef enum {
+    eWeather_SUNNY = 0,
+    eWeather_CLOUD = 1,
+    eWeather_SHADE = 2,
+    eWeather_THUNDER_RAIN = 3,
+    eWeather_LIGHT_RAIN = 4,
+    eWeather_MODERATE_RAIN = 5,
+    eWeather_HEAVY_RAIN = 6,
+    eWeather_STORM_RAIN = 7,
+} eWeather;
+
+
+typedef struct _user_data_t
+{
+    rt_bool_t voice;
+    int temp;
+    int humi;
+    eWeather weather;
+}user_data_t;
+
 typedef struct _user_status_data_t{
     int connect_status; // 0:init, 1:连接路由器中，, 2:连接路由器成功， 3:连接路由器失败 4:连云成功
+    rt_bool_t report_status;
+    user_data_t user_data;
 }user_status_data_t;
 
 user_status_data_t *user_get_connect_status(void);

@@ -18,7 +18,7 @@
 #include "user_include.h"
 #include <time.h>
 #include <stdint.h>
-#include "ntp.h"
+#include "ntp.h"    
 
 #define GET_HEADER_BUFSZ        4096        //头部大小
 #define GET_RESP_BUFSZ          6 * 1024        //响应缓冲区大小
@@ -46,6 +46,9 @@ void weather_data_parse(rt_uint8_t *data)
 {
     int i = 0, size = 0;
     cJSON *root = RT_NULL, *object = RT_NULL, *item_array = RT_NULL, *item = RT_NULL, *pvalue = RT_NULL;
+    char *token;
+   
+
     root = cJSON_Parse((const char *)data);
     if (!root)
     {
@@ -53,24 +56,62 @@ void weather_data_parse(rt_uint8_t *data)
         return;
     }
     object = cJSON_GetObjectItem(root, "data");
+    pvalue =cJSON_GetObjectItem(object, "wendu");
+    rt_kprintf("\r\ntemp:%s ", pvalue->valuestring);
+    user_get_connect_status()->user_data.temp = atoi(pvalue->valuestring);
+    pvalue =cJSON_GetObjectItem(object, "shidu");
+    for (i = 0; i < strlen(pvalue->valuestring); i++)
+    {
+        if ('%' == pvalue->valuestring[i])
+        {
+            pvalue->valuestring[i] = 0x00;
+        }
+    }
+    rt_kprintf("\r\nhumi:%s ", pvalue->valuestring);
+    user_get_connect_status()->user_data.humi = atoi(pvalue->valuestring);
+
     item_array = cJSON_GetObjectItem(object, "forecast");
     size = cJSON_GetArraySize(item_array);
-    for (i = 0; i < size; i ++)
+    for (i = 0; i < 1; i ++)
     {
         item =cJSON_GetArrayItem(item_array, i);
         pvalue =cJSON_GetObjectItem(item, "ymd");
         rt_kprintf("\r\nyear-month-day:%s ", pvalue->valuestring);
         pvalue =cJSON_GetObjectItem(item, "type");
-        rt_kprintf("\r\nweather:%s\r\n ", pvalue->valuestring);
+        rt_kprintf("\r\nweather:%s", pvalue->valuestring);
+        if (!strcmp(pvalue->valuestring, "晴"))
+        {
+            user_get_connect_status()->user_data.weather = eWeather_SUNNY;
+        }else if (!strcmp(pvalue->valuestring, "多云"))
+        {
+            user_get_connect_status()->user_data.weather = eWeather_CLOUD;
+        }else if (!strcmp(pvalue->valuestring, "阴"))
+        {
+            user_get_connect_status()->user_data.weather = eWeather_SHADE;
+        }else if (!strcmp(pvalue->valuestring, "雷阵雨"))
+        {
+            user_get_connect_status()->user_data.weather = eWeather_THUNDER_RAIN;
+        }else if (!strcmp(pvalue->valuestring, "小雨"))
+        {
+            user_get_connect_status()->user_data.weather = eWeather_LIGHT_RAIN;
+        }else if (!strcmp(pvalue->valuestring, "中雨"))
+        {
+            user_get_connect_status()->user_data.weather = eWeather_MODERATE_RAIN;
+        }else if (!strcmp(pvalue->valuestring, "大雨"))
+        {
+            user_get_connect_status()->user_data.weather = eWeather_HEAVY_RAIN;
+        }
         pvalue =cJSON_GetObjectItem(item, "notice");
-        rt_kprintf("notice:%s\r\n ", pvalue->valuestring);
+        rt_kprintf("\r\nnotice:%s", pvalue->valuestring);
         pvalue =cJSON_GetObjectItem(item, "high");
-        rt_kprintf("high:%s", pvalue->valuestring);
+        rt_kprintf("\r\nhigh:%s", pvalue->valuestring);
         pvalue =cJSON_GetObjectItem(item, "low");
         rt_kprintf("\r\nlow:%s\r\n", pvalue->valuestring);
     }
 
     // user_weather_data_report(pvalue->valuestring);
+    user_get_connect_status()->report_status = RT_TRUE;
+    
 
     if (root != RT_NULL)
         cJSON_Delete(root);
@@ -115,7 +156,7 @@ void weather(void)
         goto __exit;
     }
     content_length = webclient_content_length_get(session);
-    rt_kprintf("recv json data, which's length is %d\r\n", content_length);
+    // rt_kprintf("recv json data, which's length is %d\r\n", content_length);
     if (content_length < 0)
     {
         getdata_pos = buffer;
@@ -187,7 +228,6 @@ void weather_task_thread(void* arg)
         if ( 0 == current_time.second )
         {
             rt_kprintf("########################## sync weather and ntp time #####################\r\n");
-            weather();
             user_sntp_time_synced();
         }
 

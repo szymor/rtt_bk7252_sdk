@@ -19,7 +19,6 @@ user_status_data_t *user_get_connect_status(void)
     return &data_connect_ctx;
 }
 
-
 int clock_main( void )
 {
     int ret = 0;
@@ -74,14 +73,14 @@ int clock_main( void )
     user_get_connect_status()->connect_status = USER_WLAN_STA_CONNECTED;
     rt_thread_mdelay(1000);
 
+    tid = rt_thread_create("data_template_clock", (void (*)(void *))data_template_clock_thread,
+                           NULL, stack_size, RT_THREAD_PRIORITY_MAX / 2 - 1, 10);
+
+    if (tid != RT_NULL) {
+        rt_thread_startup(tid);
+    }
+
     weather_task_start();
-
-    // tid = rt_thread_create("data_template_clock", (void (*)(void *))data_template_clock_thread,
-    //                        NULL, stack_size, RT_THREAD_PRIORITY_MAX / 2 - 1, 10);
-
-    // if (tid != RT_NULL) {
-    //     rt_thread_startup(tid);
-    // }
 
     return 0;
 }
