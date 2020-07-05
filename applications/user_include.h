@@ -46,8 +46,6 @@ void beep_open(void);
 
 void beep_close(void);
 
-void weather_task_start(void);
-
 /******************** user_entry.c ***********************/
 int clock_main( void );
 
@@ -78,6 +76,8 @@ int user_time_task_result_report(void);
 void user_sntp_time_synced( void );
 
 void timer_task_start(void);
+
+int user_get_time( USER_TIME_S *current_time );
 
 /******************** user_weather.c ***********************/
 void weather_task_start(void);

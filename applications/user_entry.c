@@ -33,9 +33,9 @@ int clock_main( void )
     user_get_connect_status()->connect_status = USER_WLAN_STA_INIT;
 
     /* bsp init  */
-    bsp_init();
+    // bsp_init();
 
-    rt_kprintf("after bsp init.\r\n");
+    // rt_kprintf("after bsp init.\r\n");
 
     // connect to router
     /* get wlan device */
@@ -57,8 +57,8 @@ int clock_main( void )
     //     rt_kprintf("register event handler error!\r\n");
     // }
     /* TODO: use easy-join to replace */
-    rt_wlan_info_init(&wlan_info, WIFI_STATION, SECURITY_WPA2_MIXED_PSK, "lxy2305");
-    rt_wlan_connect(wlan, &wlan_info, "yjplhb123456");
+    rt_wlan_info_init(&wlan_info, WIFI_STATION, SECURITY_WPA2_MIXED_PSK, "Xiaomi_brown");
+    rt_wlan_connect(wlan, &wlan_info, "12345678q");
     rt_wlan_info_deinit(&wlan_info);
     user_get_connect_status()->connect_status = USER_WLAN_STA_CONNECTING;
 
@@ -73,6 +73,8 @@ int clock_main( void )
     rt_kprintf("connect to ap success!\r\n");
     user_get_connect_status()->connect_status = USER_WLAN_STA_CONNECTED;
     rt_thread_mdelay(1000);
+
+    weather_task_start();
 
     // tid = rt_thread_create("data_template_clock", (void (*)(void *))data_template_clock_thread,
     //                        NULL, stack_size, RT_THREAD_PRIORITY_MAX / 2 - 1, 10);

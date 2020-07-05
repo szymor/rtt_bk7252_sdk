@@ -74,7 +74,7 @@ int webclient_get_file(const char* URI, const char* filename)
         rc = -WEBCLIENT_NOMEM;
         goto __exit;
     }
-	
+
     if (session->content_length < 0)
     {
         while (1)
@@ -158,7 +158,7 @@ int webclient_post_file(const char* URI, const char* filename,
     char *header = RT_NULL, *header_ptr;
     unsigned char *buffer = RT_NULL, *buffer_ptr;
     struct webclient_session* session = RT_NULL;
-    int bytes_read = 0, resp_data_len = 0;
+    int resp_data_len = 0;
 
     fd = open(filename, O_RDONLY, 0);
     if (fd < 0)
@@ -221,11 +221,11 @@ int webclient_post_file(const char* URI, const char* filename,
         rc = -WEBCLIENT_NOMEM;
         goto __exit;
     }
-    
+
     rt_strncpy(session->header->buffer, header, rt_strlen(header));
     session->header->length = rt_strlen(session->header->buffer);
 
-    rc = webclient_post(session, URI, NULL);
+    rc = webclient_post(session, URI, NULL, 0);
     if(rc < 0)
     {
         goto __exit;
@@ -256,16 +256,23 @@ int webclient_post_file(const char* URI, const char* filename,
         rc = -WEBCLIENT_ERROR;
         goto __exit;
     }
-    
+
     resp_data_len = webclient_content_length_get(session);
     if (resp_data_len > 0)
     {
+        int bytes_read = 0;
+
         rt_memset(buffer, 0x00, WEBCLIENT_RESPONSE_BUFSZ);
-        if (webclient_read(session, buffer, resp_data_len) < 0)
+        do
         {
-            rc = -WEBCLIENT_ERROR;
-            goto __exit;
-        }
+            bytes_read = webclient_read(session, buffer,
+                resp_data_len < WEBCLIENT_RESPONSE_BUFSZ ? resp_data_len : WEBCLIENT_RESPONSE_BUFSZ);
+            if (bytes_read <= 0)
+            {
+                break;
+            }
+            resp_data_len -= bytes_read;
+        } while(resp_data_len > 0);
     }
 
 __exit:
@@ -291,7 +298,6 @@ __exit:
 
     return rc;
 }
-
 
 int wget(int argc, char** argv)
 {

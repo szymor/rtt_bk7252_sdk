@@ -51,7 +51,7 @@ void key_thread_entry(void *parameter)
 
     while (1)
     {
-        if (rt_pin_read(KEY1) == PIN_LOW)
+        if (rt_pin_read(KEY1) == PIN_HIGH)
         {
             rt_kprintf("key1 pressed!\n");
         }
@@ -116,3 +116,4 @@ int gpio_sample(void)
 }
 
 FINSH_FUNCTION_EXPORT_ALIAS(gpio_sample, __cmd_gpio, gpio sample);
+MSH_CMD_EXPORT(gpio_sample,  gpio sample);

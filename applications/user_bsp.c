@@ -13,7 +13,7 @@
 #define PIN_BEEP               0
 
 /* Modify this pin according to the actual wiring situation */
-#define USER_DHT11_DATA_PIN    1  //P1 SDA
+#define USER_DHT11_DATA_PIN    31  //P21 SDA
 #define POST_DATA_TEMP    "{\"temp\":%d,\"temp_mode\":1,\"humi\":%d,\"time_mode\":1,\"time_show_mode\":1,\"voice\":1}"
 
 
@@ -105,7 +105,7 @@ void lcd_task_thread(void* arg)
     {
             temp_old = (sensor_data.data.temp & 0xffff) >> 0;      // get temp
             humi_old = (sensor_data.data.temp & 0xffff0000) >> 16; // get humi
-        rt_kprintf("temp:%d, humi:%d\n" ,temp, humi);
+        rt_kprintf("-----------------------------------------------temp:%d, humi:%d\n" ,temp, humi);
     }else
     {
         rt_kprintf("get temperature failed\r\n");
@@ -134,58 +134,58 @@ void lcd_task_thread(void* arg)
             }
         }
 
-        if (1 == value_change_flag)
-        {
-            value_change_flag = 0;
-            if (4 == user_get_connect_status()->connect_status)
-            {
-                user_data_report(temp, humi);
-            }
-        }
-        /* output current time */
-        now = time(RT_NULL);
-        // rt_kprintf("%s", ctime(&now));  //Mon Dec  9 13:14:55 2019
-        sscanf(ctime(&now), "%[^ ] %[^ ] %[^ ] %[^:]:%[^:]:%[^ ] %s", week, month, day, hour, minute, second, year);
-        if (NULL != rt_strstr(month, "Jan"))
-        {
-            value = 1;
-        }else if (NULL != rt_strstr(month, "Feb"))
-        {
-            value = 2;
-        }else if (NULL != rt_strstr(month, "Mar"))
-        {
-            value = 3;
-        }else if (NULL != rt_strstr(month, "Apr"))
-        {
-            value = 4;
-        }else if (NULL != rt_strstr(month, "May"))
-        {
-            value = 5; 
-        }else if (NULL != rt_strstr(month, "Jun"))
-        {
-            value = 6;  
-        }else if (NULL != rt_strstr(month, "Jul"))
-        {
-            value = 7; 
-        }else if (NULL != rt_strstr(month, "Aug"))
-        {
-            value = 8; 
-        }else if (NULL != rt_strstr(month, "Sep"))
-        {
-            value = 9; 
-        }else if (NULL != rt_strstr(month, "Oct"))
-        {
-            value = 10; 
-        }else if (NULL != rt_strstr(month, "Nov"))
-        {
-            value = 11; 
-        }else if (NULL != rt_strstr(month, "Dec"))
-        {
-            value = 12; 
-        }
-        rt_sprintf(sval, "%s-%d-%s %s:%s:%s", year, value, day, hour, minute, second);
-        lcd_show_string(10, 20+24+24+24+24+24, 24, sval);
-        rt_thread_mdelay(1000);
+        // if (1 == value_change_flag)
+        // {
+        //     value_change_flag = 0;
+        //     if (4 == user_get_connect_status()->connect_status)
+        //     {
+        //         user_data_report(temp, humi);
+        //     }
+        // }
+        // /* output current time */
+        // now = time(RT_NULL);
+        // // rt_kprintf("%s", ctime(&now));  //Mon Dec  9 13:14:55 2019
+        // sscanf(ctime(&now), "%[^ ] %[^ ] %[^ ] %[^:]:%[^:]:%[^ ] %s", week, month, day, hour, minute, second, year);
+        // if (NULL != rt_strstr(month, "Jan"))
+        // {
+        //     value = 1;
+        // }else if (NULL != rt_strstr(month, "Feb"))
+        // {
+        //     value = 2;
+        // }else if (NULL != rt_strstr(month, "Mar"))
+        // {
+        //     value = 3;
+        // }else if (NULL != rt_strstr(month, "Apr"))
+        // {
+        //     value = 4;
+        // }else if (NULL != rt_strstr(month, "May"))
+        // {
+        //     value = 5; 
+        // }else if (NULL != rt_strstr(month, "Jun"))
+        // {
+        //     value = 6;  
+        // }else if (NULL != rt_strstr(month, "Jul"))
+        // {
+        //     value = 7; 
+        // }else if (NULL != rt_strstr(month, "Aug"))
+        // {
+        //     value = 8; 
+        // }else if (NULL != rt_strstr(month, "Sep"))
+        // {
+        //     value = 9; 
+        // }else if (NULL != rt_strstr(month, "Oct"))
+        // {
+        //     value = 10; 
+        // }else if (NULL != rt_strstr(month, "Nov"))
+        // {
+        //     value = 11; 
+        // }else if (NULL != rt_strstr(month, "Dec"))
+        // {
+        //     value = 12; 
+        // }
+        // rt_sprintf(sval, "%s-%d-%s %s:%s:%s", year, value, day, hour, minute, second);
+        // lcd_show_string(10, 20+24+24+24+24+24, 24, sval);
+        rt_thread_mdelay(5000);
 	}
 }
 
@@ -218,15 +218,15 @@ int bsp_init(void)
     // // }
 
     /* create the ambient light data upload thread */
-    // tid = rt_thread_create("lcd",
-    //                        lcd_task_thread,
-    //                        RT_NULL,
-    //                        2 * 1024,
-    //                        RT_THREAD_PRIORITY_MAX / 3 - 1,
-    //                        5);
-    // if (tid)
-    // {
-    //     rt_thread_startup(tid);
-    // }
+    tid = rt_thread_create("lcd",
+                           lcd_task_thread,
+                           RT_NULL,
+                           2 * 1024,
+                           RT_THREAD_PRIORITY_MAX / 3 - 1,
+                           5);
+    if (tid)
+    {
+        rt_thread_startup(tid);
+    }
 
 }
