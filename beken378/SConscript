@@ -286,7 +286,7 @@ path += [cwd + '/func/spidma_intf']
 path += [cwd + '/func/camera_intf']
 path += [cwd + '/func/video_transfer']
 path += [cwd + '/func/voice_transfer']
-path += [cwd + '/func/lwip_intf\dhcpd']
+path += [cwd + '/func/lwip_intf/dhcpd']
 libs = []
 
 libpath = []
