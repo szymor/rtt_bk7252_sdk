@@ -56,7 +56,7 @@ I2C_OP_ST i2c_operater;
 int camera_hw_init(void)
 {
     rt_uint8_t res;
-    camera_i2c_bus = rt_device_find(CAMERA_I2CBUS_NAME);
+    camera_i2c_bus = (struct rt_i2c_bus_device *)rt_device_find(CAMERA_I2CBUS_NAME);
 
     if (camera_i2c_bus == RT_NULL)
     {
