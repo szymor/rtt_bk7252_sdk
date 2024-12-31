@@ -15,6 +15,9 @@
 #include "fake_clock_pub.h"
 #include "power_save_pub.h"
 
+// from mem_arch.c
+void *dtcm_malloc(size_t size);
+
 void ethernetif_input(int iface, struct pbuf *p);
 UINT32 rwm_transfer_node(MSDU_NODE_T *node, u8 flag);
 
@@ -919,4 +922,3 @@ void rwn_mgmt_show_vif_peer_sta_list(UINT8 role)
 }
 
 // eof
-
