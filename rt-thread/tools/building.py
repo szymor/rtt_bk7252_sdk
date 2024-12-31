@@ -733,7 +733,7 @@ def GenTargetProject(program = None):
                 if template:
                     MDK5Project('project.uvprojx', Projects)
                 else:
-                    print 'No template project file found.'
+                    print('No template project file found.')
 
     if GetOption('target') == 'mdk4':
         from keil import MDK4Project
