@@ -591,7 +591,7 @@ def DefineGroup(name, src, depend, **parameters):
         Env.AppendUnique(LIBPATH = group['LIBPATH'])
 
     # check whether to build group library
-    if group.has_key('LIBRARY'):
+    if 'LIBRARY' in group:
         objs = Env.Library(name, group['src'])
     else:
         # only add source
