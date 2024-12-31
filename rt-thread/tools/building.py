@@ -566,15 +566,15 @@ def DefineGroup(name, src, depend, **parameters):
     else:
         group['src'] = src
 
-    if group.has_key('CCFLAGS'):
+    if 'CCFLAGS' in group:
         Env.AppendUnique(CCFLAGS = group['CCFLAGS'])
-    if group.has_key('CPPPATH'):
+    if 'CPPPATH' in group:
         Env.AppendUnique(CPPPATH = group['CPPPATH'])
-    if group.has_key('CPPDEFINES'):
+    if 'CPPDEFINES' in group:
         Env.AppendUnique(CPPDEFINES = group['CPPDEFINES'])
-    if group.has_key('LINKFLAGS'):
+    if 'LINKFLAGS' in group:
         Env.AppendUnique(LINKFLAGS = group['LINKFLAGS'])
-    if group.has_key('ASFLAGS'):
+    if 'ASFLAGS' in group:
         Env.AppendUnique(ASFLAGS = group['ASFLAGS'])
 
     # check whether to clean up library
