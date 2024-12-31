@@ -185,7 +185,7 @@ def MakeCopyHeader(program, BSP_ROOT, RTT_ROOT, Env):
         dst = src.replace(RTT_ROOT, '')
         if dst[0] == os.sep or dst[0] == '/':
             dst = dst[1:]
-        print '=> ', dst
+        print('=> ', dst)
         dst = os.path.join(target_path, dst)
         do_copy_file(src, dst)
 
