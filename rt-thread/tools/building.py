@@ -27,6 +27,7 @@
 import os
 import sys
 import string
+from collections import deque
 
 from SCons.Script import *
 from utils import _make_path_relative
