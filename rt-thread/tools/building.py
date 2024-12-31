@@ -700,7 +700,7 @@ def DoBuilding(target, objects):
     else:
         # remove source files with local flags setting
         for group in Projects:
-            if group.has_key('LOCAL_CCFLAGS') or group.has_key('LOCAL_CPPPATH') or group.has_key('LOCAL_CPPDEFINES'):
+            if 'LOCAL_CCFLAGS' in group or 'LOCAL_CPPPATH' in group or 'LOCAL_CPPDEFINES' in group:
                 for source in group['src']:
                     for obj in objects:
                         if source.abspath == obj.abspath or (len(obj.sources) > 0 and source.abspath == obj.sources[0].abspath):
