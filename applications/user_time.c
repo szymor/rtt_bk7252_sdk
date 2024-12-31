@@ -1,6 +1,8 @@
 #include "user_include.h"
 #include <time.h>
 #include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include "ntp.h"
 #include "rtthread.h"
 
@@ -32,7 +34,7 @@ int user_get_time( USER_TIME_S *current_time )
     char hour[4] = { 0x00 };
     char minute[4] = {0x00 };
     char second[4] = {0x00 };
-    int year[4] = {0x00 };
+    char year[4] = {0x00 };
 
     /* output current time */
     now = time(RT_NULL);
@@ -265,4 +267,3 @@ void timer_task_start(void)
         rt_thread_startup(tid);
     }
 }
-

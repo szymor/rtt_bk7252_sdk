@@ -1,6 +1,7 @@
 #include "rtthread.h"
 #include "user_include.h"
 #include "wlan_dev.h"
+#include "qcloud_iot_import.h"
 
 #define DATA_TEMPLATE_CLOCK_THREAD_STACK_SIZE 1024 * 8
 
