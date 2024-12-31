@@ -207,8 +207,8 @@ __exit:
 
 void weather_task_thread(void* arg)
 {
-    int a =0;
-	uint8_t *p = &a;
+    uint8_t a = 0;
+    uint8_t *p = &a;
 	USER_TIME_S current_time = { 0x00 };
 
     // user_dev_time_flash_read();
