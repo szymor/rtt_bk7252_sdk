@@ -508,18 +508,18 @@ def MergeGroup(src_group, group):
             src_group['ASFLAGS'] = group['ASFLAGS']
 
     # for local CCFLAGS/CPPPATH/CPPDEFINES
-    if group.has_key('LOCAL_CCFLAGS'):
-        if src_group.has_key('LOCAL_CCFLAGS'):
+    if 'LOCAL_CCFLAGS' in group:
+        if 'LOCAL_CCFLAGS' in src_group:
             src_group['LOCAL_CCFLAGS'] = src_group['LOCAL_CCFLAGS'] + group['LOCAL_CCFLAGS']
         else:
             src_group['LOCAL_CCFLAGS'] = group['LOCAL_CCFLAGS']
-    if group.has_key('LOCAL_CPPPATH'):
-        if src_group.has_key('LOCAL_CPPPATH'):
+    if 'LOCAL_CPPPATH' in group:
+        if 'LOCAL_CPPPATH' in src_group:
             src_group['LOCAL_CPPPATH'] = src_group['LOCAL_CPPPATH'] + group['LOCAL_CPPPATH']
         else:
             src_group['LOCAL_CPPPATH'] = group['LOCAL_CPPPATH']
-    if group.has_key('LOCAL_CPPDEFINES'):
-        if src_group.has_key('LOCAL_CPPDEFINES'):
+    if 'LOCAL_CPPDEFINES' in group:
+        if 'LOCAL_CPPDEFINES' in src_group:
             src_group['LOCAL_CPPDEFINES'] = src_group['LOCAL_CPPDEFINES'] + group['LOCAL_CPPDEFINES']
         else:
             src_group['LOCAL_CPPDEFINES'] = group['LOCAL_CPPDEFINES']
@@ -585,9 +585,9 @@ def DefineGroup(name, src, depend, **parameters):
             if os.path.exists(fn):
                 os.unlink(fn)
 
-    if group.has_key('LIBS'):
+    if 'LIBS' in group:
         Env.AppendUnique(LIBS = group['LIBS'])
-    if group.has_key('LIBPATH'):
+    if 'LIBPATH' in group:
         Env.AppendUnique(LIBPATH = group['LIBPATH'])
 
     # check whether to build group library
