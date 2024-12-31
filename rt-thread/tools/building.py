@@ -124,7 +124,7 @@ def GenCconfigFile(env, BuildOptions):
 
         # try again
         if os.path.isfile('cconfig.h'):
-            f = file('cconfig.h', 'r')
+            f = open('cconfig.h', 'r')
             if f:
                 contents = f.read()
                 f.close();
@@ -292,7 +292,7 @@ def PrepareBuilding(env, root_directory, has_libcpu=False, remove_components = [
 
     # parse rtconfig.h to get used component
     PreProcessor = PatchedPreProcessor()
-    f = file('rtconfig.h', 'r')
+    f = open('rtconfig.h', 'r')
     contents = f.read()
     f.close()
     PreProcessor.process_contents(contents)
@@ -403,7 +403,7 @@ def PrepareModuleBuilding(env, root_directory, bsp_directory):
 
     # parse bsp rtconfig.h to get used component
     PreProcessor = PatchedPreProcessor()
-    f = file(bsp_directory + '/rtconfig.h', 'r')
+    f = open(bsp_directory + '/rtconfig.h', 'r')
     contents = f.read()
     f.close()
     PreProcessor.process_contents(contents)
@@ -454,7 +454,7 @@ def LocalOptions(config_filename):
     # parse wiced_config.h to get used component
     PreProcessor = SCons.cpp.PreProcessor()
 
-    f = file(config_filename, 'r')
+    f = open(config_filename, 'r')
     contents = f.read()
     f.close()
 
@@ -864,7 +864,7 @@ def GetVersion():
 
     # parse rtdef.h to get RT-Thread version
     prepcessor = PatchedPreProcessor()
-    f = file(rtdef, 'r')
+    f = open(rtdef, 'r')
     contents = f.read()
     f.close()
     prepcessor.process_contents(contents)
