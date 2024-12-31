@@ -486,7 +486,7 @@ def AddDepend(option):
 
 def MergeGroup(src_group, group):
     src_group['src'] = src_group['src'] + group['src']
-    if group.has_key('CCFLAGS'):
+    if 'CCFLAGS' in group:
         if src_group.has_key('CCFLAGS'):
             src_group['CCFLAGS'] = src_group['CCFLAGS'] + group['CCFLAGS']
         else:
