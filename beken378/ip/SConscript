@@ -42,11 +42,11 @@ options = LocalOptions(sys_config)
 
 wifi_lib_name = 'ip'
 
-if (0 == string.find(GetLocalDepend(options, 'CFG_SOC_NAME'), 'SOC_BK7231')):
+if (0 == GetLocalDepend(options, 'CFG_SOC_NAME').find('SOC_BK7231')):
     wifi_lib_name += '_7231'
-elif (0 == string.find(GetLocalDepend(options, 'CFG_SOC_NAME'), 'SOC_BK7231U')):
+elif (0 == GetLocalDepend(options, 'CFG_SOC_NAME').find('SOC_BK7231U')):
     wifi_lib_name += '_7231u'
-elif(0 == string.find(GetLocalDepend(options, 'CFG_SOC_NAME'), 'SOC_BK7221U')):
+elif(0 == GetLocalDepend(options, 'CFG_SOC_NAME').find('SOC_BK7221U')):
     wifi_lib_name += '_7221u'
 else:
     wifi_lib_name += '_unknown'
