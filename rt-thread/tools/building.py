@@ -83,7 +83,7 @@ class Win32Spawn:
                 try:
                     os.remove(f)
                 except Exception as e:
-                    print 'Error removing file: %s' % e
+                    print('Error removing file: %s' % e)
                     return -1
             return 0
 
@@ -104,8 +104,8 @@ class Win32Spawn:
         try:
             proc = subprocess.Popen(cmdline, env=_e, shell=False)
         except Exception as e:
-            print 'Error in calling:\n%s' % cmdline
-            print 'Exception: %s: %s' % (e, os.strerror(e.errno))
+            print('Error in calling:\n%s' % cmdline)
+            print('Exception: %s: %s' % (e, os.strerror(e.errno)))
             return e.errno
         finally:
             os.environ['PATH'] = old_path
@@ -230,7 +230,7 @@ def PrepareBuilding(env, root_directory, has_libcpu=False, remove_components = [
         # --target will change the toolchain settings which clang-analyzer is
         # depend on
         if GetOption('clang-analyzer'):
-            print '--clang-analyzer cannot be used with --target'
+            print('--clang-analyzer cannot be used with --target')
             sys.exit(1)
 
         SetOption('no_exec', 1)
@@ -240,8 +240,8 @@ def PrepareBuilding(env, root_directory, has_libcpu=False, remove_components = [
             os.environ['RTT_CC'] = rtconfig.CROSS_TOOL
             reload(rtconfig)
         except KeyError:
-            print 'Unknow target: %s. Avaible targets: %s' % \
-                    (tgt_name, ', '.join(tgt_dict.keys()))
+            print('Unknow target: %s. Avaible targets: %s' % \
+                    (tgt_name, ', '.join(tgt_dict.keys())))
             sys.exit(1)
     elif (GetDepend('RT_USING_NEWLIB') == False and GetDepend('RT_USING_NOLIBC') == False) \
         and rtconfig.PLATFORM == 'gcc':
@@ -580,7 +580,7 @@ def DefineGroup(name, src, depend, **parameters):
     # check whether to clean up library
     if GetOption('cleanlib') and os.path.exists(os.path.join(group['path'], GroupLibFullName(name, Env))):
         if group['src'] != []:
-            print 'Remove library:', GroupLibFullName(name, Env)
+            print('Remove library:', GroupLibFullName(name, Env))
             fn = os.path.join(group['path'], GroupLibFullName(name, Env))
             if os.path.exists(fn):
                 os.unlink(fn)
@@ -645,7 +645,7 @@ def BuildLibInstallAction(target, source, env):
         if Group['name'] == lib_name:
             lib_name = GroupLibFullName(Group['name'], env)
             dst_name = os.path.join(Group['path'], lib_name)
-            print 'Copy %s => %s' % (lib_name, dst_name)
+            print('Copy %s => %s' % (lib_name, dst_name))
             do_copy_file(lib_name, dst_name)
             break
 
@@ -807,7 +807,7 @@ def EndBuilding(target, program = None):
 
     if not GetOption('help') and not GetOption('target'):
         if not os.path.exists(rtconfig.EXEC_PATH):
-            print "Error: the toolchain path (%s) is not exist, please check 'EXEC_PATH' in path or rtconfig.py." % rtconfig.EXEC_PATH
+            print("Error: the toolchain path (%s) is not exist, please check 'EXEC_PATH' in path or rtconfig.py." % rtconfig.EXEC_PATH)
             need_exit = True
 
     if need_exit:
