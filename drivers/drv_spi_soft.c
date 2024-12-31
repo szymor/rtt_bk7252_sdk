@@ -42,7 +42,7 @@ struct soft_spi_dev
 static struct soft_spi_dev *spi_dev;
 
 /* 设置 SPI 端口初始化 */
-static void soft_spi_init()
+static int soft_spi_init()
 {
     //设置为输出模式
     gpio_config(SOFT_SPI_CS, GMODE_OUTPUT);
@@ -54,6 +54,8 @@ static void soft_spi_init()
     gpio_output(SOFT_SPI_SCLK,0);
     gpio_output(SOFT_SPI_MOSI,0);
     gpio_output(SOFT_SPI_CS,1);
+
+    return RT_EOK;
 }
 
 /*设置从设备使能 */
