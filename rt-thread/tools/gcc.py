@@ -103,7 +103,7 @@ def GCCResult(rtconfig, str):
         stdc = '1989'
         posix_thread = 0
 
-        for line in stdout.split('\n'):
+        for line in stdout.decode().split('\n'):
             if re.search('fd_set', line):
                 have_fdset = 1
 
