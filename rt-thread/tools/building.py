@@ -433,7 +433,7 @@ def GetConfigValue(name):
 def GetDepend(depend):
     building = True
     if type(depend) == type('str'):
-        if not BuildOptions.has_key(depend) or BuildOptions[depend] == 0:
+        if depend not in BuildOptions or BuildOptions[depend] == 0:
             building = False
         elif BuildOptions[depend] != '':
             return BuildOptions[depend]
@@ -443,7 +443,7 @@ def GetDepend(depend):
     # for list type depend
     for item in depend:
         if item != '':
-            if not BuildOptions.has_key(item) or BuildOptions[item] == 0:
+            if item not in BuildOptions or BuildOptions[item] == 0:
                 building = False
 
     return building
@@ -466,7 +466,7 @@ def LocalOptions(config_filename):
 def GetLocalDepend(options, depend):
     building = True
     if type(depend) == type('str'):
-        if not options.has_key(depend) or options[depend] == 0:
+        if depend not in options or options[depend] == 0:
             building = False
         elif options[depend] != '':
             return options[depend]
@@ -476,7 +476,7 @@ def GetLocalDepend(options, depend):
     # for list type depend
     for item in depend:
         if item != '':
-            if not options.has_key(item) or options[item] == 0:
+            if item not in options or options[item] == 0:
                 building = False
 
     return building
