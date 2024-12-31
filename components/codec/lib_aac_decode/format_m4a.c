@@ -152,6 +152,7 @@ static int format_m4a_run(struct audio_codec *codec)
 
         debug_printf("%s%d: M4A_PHASE_INIT\n", __FUNCTION__, __LINE__);
 
+        void list_memheap(void);    // from cmd.c
         list_memheap(); //TODO: 
         m4a->decoder = (void *)rt_malloc(aac_decoder_get_ram_size());
         debug_printf("m4a->decoder malloc size = %d.\n", aac_decoder_get_ram_size()); 

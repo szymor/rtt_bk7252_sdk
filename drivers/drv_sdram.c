@@ -1,5 +1,6 @@
 #include <rtthread.h>
 #include <board.h>
+#include <string.h>
 
 extern struct rt_memheap _heap;
 static struct rt_memheap *sdram_heap = &_heap;

@@ -66,8 +66,11 @@ static void video_buffer_add_pkt_header(TV_HDR_PARAM_PTR param)
     }
 }
 
-static int video_buffer_recv_video_data(UINT8 *data, UINT32 len)
+static int video_buffer_recv_video_data(UINT8 *data, UINT32 pos, UINT32 len, UINT8 is_stop)
 {
+    (void)pos;
+    (void)is_stop;
+
     if(g_vbuf.buf_base)
     {
         UINT32 copy_len, left_len;
@@ -225,4 +228,3 @@ UINT32 video_buffer_read_frame(UINT8 *buf, UINT32 buf_len)
 }
 
 #endif //#if (CFG_USE_SPIDMA || CFG_USE_CAMERA_INTF) 
-
