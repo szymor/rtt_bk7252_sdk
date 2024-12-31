@@ -663,7 +663,7 @@ def DoBuilding(target, objects):
 
     # handle local group
     def local_group(group, objects):
-        if group.has_key('LOCAL_CCFLAGS') or group.has_key('LOCAL_CPPPATH') or group.has_key('LOCAL_CPPDEFINES') or group.has_key('LOCAL_ASFLAGS'):
+        if 'LOCAL_CCFLAGS' in group or 'LOCAL_CPPPATH' in group or 'LOCAL_CPPDEFINES' in group or 'LOCAL_ASFLAGS' in group:
             CCFLAGS = Env.get('CCFLAGS', '') + group.get('LOCAL_CCFLAGS', '')
             CPPPATH = Env.get('CPPPATH', ['']) + group.get('LOCAL_CPPPATH', [''])
             CPPDEFINES = Env.get('CPPDEFINES', ['']) + group.get('LOCAL_CPPDEFINES', [''])
