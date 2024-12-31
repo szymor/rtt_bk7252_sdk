@@ -17,7 +17,7 @@ if os.getenv('RTT_CC'):
 
 if  CROSS_TOOL == 'gcc':
     PLATFORM    = 'gcc'
-    EXEC_PATH   = r'C:\Developer\Tools\env\tools\gnu_gcc\arm_gcc\mingw\bin'
+    EXEC_PATH   = r'/opt/arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-eabi/bin/'
 else:
     print('Please make sure your toolchains is GNU GCC!')
     exit(0)
