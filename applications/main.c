@@ -41,6 +41,7 @@
 #include "codec_helixmp3.h"
 #include "codec_opencore_amr.h"
 #include "player_system.h"
+#include "audio_device.h"
 
 #ifdef PKG_USING_LITTLEFS
 #include "BkDriverFlash.h"
