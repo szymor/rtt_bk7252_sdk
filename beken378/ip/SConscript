@@ -67,7 +67,7 @@ if (GetLocalDepend(options, 'CFG_USE_STA_PS') == 1):
 if (GetLocalDepend(options, 'CFG_USE_AP_PS') == 1):
     wifi_lib_name += '_ap'
 
-print 'using rwnx_wifi: lib' + wifi_lib_name + '.a'
+print('using rwnx_wifi: lib' + wifi_lib_name + '.a')
 
 libs = [wifi_lib_name]
 libpath = [cwd + '/']
