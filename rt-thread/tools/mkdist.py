@@ -190,7 +190,7 @@ def MakeCopyHeader(program, BSP_ROOT, RTT_ROOT, Env):
         do_copy_file(src, dst)
 
     # copy tools directory
-    print "=>  tools"
+    print("=>  tools")
     do_copy_folder(os.path.join(RTT_ROOT, "tools"), os.path.join(target_path, "tools"), ignore_patterns('*.pyc'))
     do_copy_file(os.path.join(RTT_ROOT, 'Kconfig'), os.path.join(target_path, 'Kconfig'))
     do_copy_file(os.path.join(RTT_ROOT, 'AUTHORS'), os.path.join(target_path, 'AUTHORS'))
