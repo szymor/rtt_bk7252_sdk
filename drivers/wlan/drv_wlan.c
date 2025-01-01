@@ -1,3 +1,5 @@
+#define _GNU_SOURCE
+
 #include "include.h"
 
 #include "lwip/opt.h"
@@ -8,6 +10,7 @@
 #include <lwip/stats.h>
 #include <lwip/snmp.h>
 #include "ethernetif.h"
+#include "net.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -124,7 +127,7 @@ static void packet_dump(const char *msg, const struct pbuf *p)
  *       to become availale since the stack doesn't retry to send a packet
  *       dropped because of memory failure (except for the TCP timers).
  */
-static err_t low_level_output(struct netif *netif, struct pbuf *p)
+err_t low_level_output(struct netif *netif, struct pbuf *p)
 {
     int ret;
     err_t err = ERR_OK;
