@@ -51,7 +51,7 @@ static void hexdump(const rt_uint8_t *p, rt_size_t len)
 }
 
 
-static struct mjpeg_session
+struct mjpeg_session
 {
     int sock;
     int connected;

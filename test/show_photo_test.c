@@ -55,7 +55,7 @@ static void hexdump(const rt_uint8_t *p, rt_size_t len)
 }
 
 // 创建 mjpeg 会话的结构体
-static struct mjpeg_session
+struct mjpeg_session
 {
     int sock;
     int connected;

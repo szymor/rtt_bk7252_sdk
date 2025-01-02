@@ -1,5 +1,6 @@
 #include <rtthread.h>
 #include <webclient.h>
+#include <string.h>
 
 #define DEBUG_PRINTF     rt_kprintf("[http_client] ");rt_kprintf
 #define HTTP_GET_URL "http://v.juhe.cn/weather/index?cityname=%E5%8C%97%E4%BA%AC&dtype=json&format=1&key=7022b77eecfce961ebf58268a656412e"
@@ -14,7 +15,7 @@ static int webclient_get_data(int argc,char *argv[])
     int length = 0;
     int res_len = 0;
 
-    length = webclient_request(HTTP_GET_URL, RT_NULL, 0, RT_NULL, &buffer, &res_len);
+    length = webclient_request(HTTP_GET_URL, RT_NULL, 0, RT_NULL, (void**)&buffer, &res_len);
 
     if (length < 0)
     {
@@ -36,7 +37,7 @@ static int webclient_post_data(int argc,char *argv[])
     int length = 0;
     int res_len = 0;
 
-    length = webclient_request(HTTP_POST_URL, RT_NULL, post_data, strlen(post_data), &buffer, &res_len);
+    length = webclient_request(HTTP_POST_URL, RT_NULL, post_data, strlen(post_data), (void**)&buffer, &res_len);
     if (length < 0)
     {
         DEBUG_PRINTF("webclient POST request response data error.\r\n");
@@ -52,4 +53,3 @@ static int webclient_post_data(int argc,char *argv[])
 
 MSH_CMD_EXPORT(webclient_get_data, webclient_get_data);
 MSH_CMD_EXPORT(webclient_post_data,webclient_post_data);
-
