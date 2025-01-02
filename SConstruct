@@ -10,13 +10,6 @@ if not os.getenv('RTT_ROOT'):
 sys.path = sys.path + [os.path.join(RTT_ROOT, 'tools')]
 from building import *
 
-# set RTT_ROOT
-if not os.getenv('RTT_ROOT'): 
-    RTT_ROOT='rt-thread'
-
-sys.path = sys.path + [os.path.join(RTT_ROOT, 'tools')]
-from building import *
-
 TARGET = 'rtthread.' + rtconfig.TARGET_EXT
 
 env = Environment(tools = ['mingw'],

@@ -667,7 +667,7 @@ def DoBuilding(target, objects):
         if 'LOCAL_CCFLAGS' in group or 'LOCAL_CPPPATH' in group or 'LOCAL_CPPDEFINES' in group or 'LOCAL_ASFLAGS' in group:
             CCFLAGS = Env.get('CCFLAGS', '') + group.get('LOCAL_CCFLAGS', '')
             CPPPATH = Env.get('CPPPATH', ['']) + group.get('LOCAL_CPPPATH', [''])
-            CPPDEFINES = Env.get('CPPDEFINES', deque([''])) + deque(group.get('LOCAL_CPPDEFINES', ['']))
+            CPPDEFINES = deque(Env.get('CPPDEFINES', [''])) + deque(group.get('LOCAL_CPPDEFINES', ['']))
             ASFLAGS = Env.get('ASFLAGS', '') + group.get('LOCAL_ASFLAGS', '')
 
             for source in group['src']:
