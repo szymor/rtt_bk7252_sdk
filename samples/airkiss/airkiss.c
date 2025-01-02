@@ -29,6 +29,7 @@ static volatile uint8_t g_current_channel;
 static int airkiss_recv_ret;
 static rt_sem_t g_cfg_done_sem;
 static airkiss_result_t result;
+static int result_random;
 
 static void airkiss_switch_channel(void *parameter)
 {
@@ -152,7 +153,7 @@ static void airkiss_send_notification_thread(void *parameter)
 _exit:
     if (sock >= 0)
     {
-        close(sock);
+        closesocket(sock);
     }
 }
 
@@ -266,8 +267,9 @@ static void airkiss_thread_entry(void *parameter)
         {
             rt_thread_t tid;
 
+            result_random = result.random;
             tid = rt_thread_create("air_echo",
-                                   airkiss_send_notification_thread, (void *)result.random,
+                                   airkiss_send_notification_thread, (void *)result_random,
                                    1536, RT_THREAD_PRIORITY_MAX - 3, 20);
             if (tid != RT_NULL)
             {

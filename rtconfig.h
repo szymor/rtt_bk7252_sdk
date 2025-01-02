@@ -92,6 +92,7 @@
 #define RT_USING_DFS_DEVFS
 #define RT_USING_DFS_NET
 #define RT_USING_DFS_ROMFS
+#define RT_USING_SAL
 
 /* Device Drivers */
 //#define BEKEN_USING_IIC

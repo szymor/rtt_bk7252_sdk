@@ -9,9 +9,14 @@
  * Date           Author       Notes
  * 2012-06-25     Bernard      the first version
  */
+
+#define _GNU_SOURCE
+
 #include <rtthread.h>
 #include <webnet.h>
 #include <dfs_posix.h>
+#include <string.h>
+#include <strings.h>
 #include "module.h"
 #include "util.h"
 

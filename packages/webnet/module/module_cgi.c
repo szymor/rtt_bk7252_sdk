@@ -11,6 +11,7 @@
  */
 #include <webnet.h>
 #include <string.h>
+#include <strings.h>
 
 #ifdef WEBNET_USING_CGI
 #include <dfs_posix.h>
