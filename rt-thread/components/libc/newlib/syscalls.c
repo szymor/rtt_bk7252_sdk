@@ -1,3 +1,6 @@
+#define _POSIX_SOURCE
+#define __rtems__
+
 #include <reent.h>
 #include <sys/errno.h>
 #include <sys/time.h>
@@ -479,7 +482,8 @@ int libc_console_init(void)
 		_GLOBAL_REENT->_stderr  = fdopen(__console_fd, "w");
 		setvbuf(_GLOBAL_REENT->_stderr, NULL, _IONBF, 0);
 
-		_GLOBAL_REENT->__sdidinit = 1;
+		// ...->__cleanup instead?
+		//_GLOBAL_REENT->__sdidinit = 1;
 	}
 #endif
 
